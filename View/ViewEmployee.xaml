@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Module05Exercise01.View.ViewEmployee"
+             xmlns:local="clr-namespace:Module05Exercise01.ViewModel"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,50"
+            Spacing="25">
+
+            <Label 
+                Text="Contacts"
+                HorizontalOptions="CenterAndExpand"
+                FontSize="Medium"
+                FontFamily="ManropeSemibold"
+                Margin="0,35,0,0"/>
+            
+            <!--Search Bar-->
+            <SearchBar Placeholder="Search by name, address, email, or contact"
+                       Text="{Binding SearchText}"
+                       HorizontalOptions="FillAndExpand"/>
+
+            <ListView ItemsSource="{Binding EmployeeList}"
+                      SelectedItem="{Binding SelectedEmployee}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Padding="15" 
+                                   Margin="5" 
+                                   BackgroundColor="#f2f1f6"
+                                   BorderColor="Transparent">
+
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Image
+                                        Source="https://cdn-icons-png.flaticon.com/128/9706/9706583.png"
+                                        HeightRequest="50"
+                                        WidthRequest="50"
+                                        Margin="0,0,10,0"
+                                        VerticalOptions="Center" 
+                                        Aspect="AspectFit" />
+
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontFamily="ManropeSemibold" />
+                                        <Label Text="{Binding Address}" />
+                                        <Label Text="{Binding email}" />
+                                        <Label Text="{Binding ContactNo}" />
+                                    </StackLayout>
+
+                                    <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:EmployeeViewModel}},Path=SelectedEmployeeCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                </StackLayout.GestureRecognizers>
+                                    
+                            </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Text="Load Data" 
+                    Command="{Binding LoadDataCommand}"
+                    BackgroundColor="Black"/>
+
+            <Label x:Name="ConnectionStatusLabel"
+                   Text="{Binding StatusMessage}"
+                   FontSize="13"
+                   HorizontalOptions="Center"/>
+
+            <Label 
+                Text="Add New Employee"
+                FontFamily="ManropeSemibold"
+                FontSize="20" 
+                HorizontalOptions="Center" 
+                Margin="0,35,0,0"/>
+
+            <Entry Placeholder="Name" Text="{Binding NewEmployeeName}" Margin="0,0,0,10"/>
+            <Entry Placeholder="Address" Text="{Binding NewEmployeeAddress}" Margin="0,0,0,10"/>
+            <Entry Placeholder="Email" Text="{Binding NewEmployeeEmail}" Margin="0,0,0,10"/>
+            <Entry Placeholder="Contact Number" Text="{Binding NewEmployeeContactNo}" Margin="0,0,0,10"/>
+
+            <Button 
+                Text="Add New Employee" 
+                Command="{Binding AddEmployeeCommand}"
+                BackgroundColor="#58c877"/>
+            
+            <Button 
+                Text="Update Employee" 
+                Command="{Binding UpdateEmployeeCommand}" 
+                BackgroundColor="CornflowerBlue"
+                IsEnabled="{Binding IsEmployeeSelected}"/>
+
+            <Button 
+                Text="Delete Employee" 
+                Command="{Binding DeleteEmployeeCommand}" 
+                IsEnabled="{Binding IsEmployeeSelected}" 
+                BackgroundColor="DarkRed"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

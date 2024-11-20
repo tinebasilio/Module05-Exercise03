@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Module05Exercise01.MainPage"
+             Shell.NavBarIsVisible="False">
+    
+    <VerticalStackLayout
+            Padding="30,100"
+            Spacing="25">
+
+            <Image Source="https://cdn-icons-png.flaticon.com/128/4081/4081143.png" 
+               HeightRequest="100" 
+               WidthRequest="100"
+               HorizontalOptions="StartAndExpand"/>
+
+            <Label Text="Welcome"
+                   FontSize="30"
+                   FontFamily="ManropeSemibold"/>
+            
+            <Label Text="Log in to your account to continue"
+                   Margin="0,-10"/>
+
+            <Entry Placeholder="Email or username"
+                   Margin="0,10"/>
+
+            <Entry Placeholder="Password" 
+                   IsPassword="True"
+                   Margin="0,-10"/>
+
+            <Button Text="Login" 
+                    Padding="18"
+                    Margin="0,10"
+                    Clicked="OpenViewPersonal"
+                    BackgroundColor="Black"
+                    VerticalOptions="CenterAndExpand"/>
+
+            <!--
+            <Label x:Name="ConnectionStatusLabel"
+                   Text=""
+                   FontSize="18"
+                   HorizontalOptions="Center"/>
+
+            <Button Text="Test Connection"
+                    Clicked="OnTestConnectionClicked"
+                    HorizontalOptions="Fill"/>
+            -->
+        </VerticalStackLayout>
+
+</ContentPage>
