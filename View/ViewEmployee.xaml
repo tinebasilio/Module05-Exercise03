@@ -21,8 +21,13 @@
             <SearchBar Placeholder="Search by name, address, email, or contact"
                        Text="{Binding SearchText}"
                        HorizontalOptions="FillAndExpand"/>
+            
+            <!-- No Searches Found Label -->
+            <Label Text="No results found" 
+                   HorizontalOptions="Center" 
+                   IsVisible="{Binding IsNoSearchResults}"/>
 
-            <ListView ItemsSource="{Binding EmployeeList}"
+            <ListView ItemsSource="{Binding FilteredEmployeeList}"
                       SelectedItem="{Binding SelectedEmployee}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -43,32 +48,35 @@
 
                                     <StackLayout VerticalOptions="Center">
                                         <Label Text="{Binding Name}" FontFamily="ManropeSemibold" />
-                                        <Label Text="{Binding Address}" />
                                         <Label Text="{Binding email}" />
+                                        <Label Text="{Binding Address}" />
                                         <Label Text="{Binding ContactNo}" />
                                     </StackLayout>
 
                                     <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:EmployeeViewModel}},Path=SelectedEmployeeCommand}"
-                                        CommandParameter="{Binding .}"/>
-                                </StackLayout.GestureRecognizers>
-                                    
-                            </StackLayout>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:EmployeeViewModel}},Path=SelectedEmployeeCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </StackLayout.GestureRecognizers>
+
+                                </StackLayout>
                             </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
+            <Label x:Name="ConnectionStatusLabel" 
+                   Text="{Binding StatusMessage}" 
+                   FontSize="14"
+                   TextColor="Gray"
+                   FontFamily="ManropeSemibold"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+
             <Button Text="Load Data" 
                     Command="{Binding LoadDataCommand}"
                     BackgroundColor="Black"/>
-
-            <Label x:Name="ConnectionStatusLabel"
-                   Text="{Binding StatusMessage}"
-                   FontSize="13"
-                   HorizontalOptions="Center"/>
 
             <Label 
                 Text="Add New Employee"

@@ -48,9 +48,20 @@ namespace Module05Exercise01.ViewModel
             {
                 _searchText = value;
                 OnPropertyChanged();
-                FilterEmployee();
+                FilterEmployeeList();
             }
         }
+        private bool _isNoSearchResults; 
+        public bool IsNoSearchResults 
+        { 
+            get => _isNoSearchResults; 
+            set 
+            { 
+                _isNoSearchResults = value; 
+                OnPropertyChanged(); 
+            } 
+        }
+
 
         private Employee _selectedEmployee;
         public Employee SelectedEmployee
@@ -66,13 +77,10 @@ namespace Module05Exercise01.ViewModel
                     NewEmployeeEmail = _selectedEmployee.email;
                     NewEmployeeContactNo = _selectedEmployee.ContactNo;
                     IsEmployeeSelected = true;
-                    IsEmployeeSelectedAdd = false;
-
                 }
                 else
                 {
                     IsEmployeeSelected = false;
-                    IsEmployeeSelectedAdd = true;
                 }
 
                 OnPropertyChanged();
@@ -90,16 +98,16 @@ namespace Module05Exercise01.ViewModel
             }
         }
 
-        private bool _isEmployeeSelectedAdd;
-        public bool IsEmployeeSelectedAdd
-        {
-            get => _isEmployeeSelectedAdd;
-            set
-            {
-                _isEmployeeSelectedAdd = value;
-                OnPropertyChanged();
-            }
-        }
+        //private bool _isEmployeeSelectedAdd;
+        //public bool IsEmployeeSelectedAdd
+        //{
+        //    get => _isEmployeeSelectedAdd;
+        //    set
+        //    {
+        //        _isEmployeeSelectedAdd = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         // New Employee entry for name, address, email, contact no
         private string _newEmployeeName;
@@ -175,6 +183,37 @@ namespace Module05Exercise01.ViewModel
             LoadData(); // uncomment if you want data to load automatically
         }
 
+        private void FilterEmployeeList()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                LoadData();  // No search query, reload all employees
+            }
+            else
+            {
+                var filteredList = new ObservableCollection<Employee>(
+                    EmployeeList.Where(e => e.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                             e.Address.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                             e.email.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                             e.ContactNo.Contains(SearchText, StringComparison.OrdinalIgnoreCase)));
+
+                FilteredEmployeeList.Clear();
+                foreach (var employee in filteredList)
+                {
+                    FilteredEmployeeList.Add(employee);
+                }
+            }
+
+            IsNoSearchResults = !FilteredEmployeeList.Any();
+        }
+        private void ClearFields()
+        {
+            NewEmployeeName = string.Empty;
+            NewEmployeeAddress = string.Empty;
+            NewEmployeeEmail = string.Empty;
+            NewEmployeeContactNo = string.Empty;
+        }
+
         public async Task LoadData()
         {
             if (IsBusy) return;
@@ -244,53 +283,19 @@ namespace Module05Exercise01.ViewModel
                 await LoadData();
             }
         }
-        //private async Task UpdateEmployee()
-        //{
-        //    if (IsBusy || SelectedEmployee == null)
-        //    {
-        //        StatusMessage = "Select an employee to update.";
-        //        return;
-        //    }
-
-        //    IsBusy = true;
-        //    StatusMessage = "Updating employee...";
-
-        //    try
-        //    {
-        //        SelectedEmployee.Name = NewEmployeeName;
-        //        SelectedEmployee.Address = NewEmployeeAddress;
-        //        SelectedEmployee.email = NewEmployeeEmail;
-        //        SelectedEmployee.ContactNo = NewEmployeeContactNo;
-
-        //        var success = await _employeeService.UpdateEmployeeAsync(SelectedEmployee);
-        //        StatusMessage = success ? "Employee updated successfully!" : "Failed to update employee";
-
-        //        await LoadData();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        StatusMessage = $"Error: {ex.Message}";
-        //    }
-        //    finally
-        //    {
-        //        IsBusy = false;
-        //    }
-        //}
-
         private async Task UpdateEmployee()
         {
             if (SelectedEmployee == null) return;
-            var answer = await Application.Current.MainPage.DisplayAlert("Confirm Update", $"Are you sure you want to update?", "Yes", "No");
-
-
-            if (IsBusy || string.IsNullOrWhiteSpace(NewEmployeeName) || string.IsNullOrWhiteSpace(NewEmployeeAddress) || string.IsNullOrWhiteSpace(NewEmployeeEmail) || string.IsNullOrWhiteSpace(NewEmployeeContactNo))
+            
+            if (IsBusy || string.IsNullOrWhiteSpace(NewEmployeeName) || string.IsNullOrWhiteSpace(NewEmployeeEmail) || string.IsNullOrWhiteSpace(NewEmployeeContactNo))
             {
-                StatusMessage = "Please fill in all fields before updating";
+                StatusMessage = "Select an employee to update";
                 return;
             }
 
             IsBusy = true;
             StatusMessage = "Updating employee...";
+
             try
             {
                 SelectedEmployee.Name = NewEmployeeName;
@@ -298,36 +303,37 @@ namespace Module05Exercise01.ViewModel
                 SelectedEmployee.email = NewEmployeeEmail;
                 SelectedEmployee.ContactNo = NewEmployeeContactNo;
 
-                var success = await _employeeService.UpdateEmployeeAsync(SelectedEmployee);
-                StatusMessage = success ? "Employee updated successfully" : "Failed to update employee";
-                
-                await LoadData();
-
+                var isSuccess = await _employeeService.UpdateEmployeeAsync(SelectedEmployee);
+                StatusMessage = isSuccess ? "Employee updated successfully!" : "Failed to update employee";
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Error updating employee: {ex.Message}";
+                StatusMessage = $"Error: {ex.Message}";
             }
             finally
             {
                 IsBusy = false;
+                await LoadData();
+                ClearFields();
             }
         }
 
         private async Task DeleteEmployee()
         {
             if (SelectedEmployee == null) return;
-            var answer = await Application.Current.MainPage.DisplayAlert("Confirm Delete", $"Are you sure you want to delete {SelectedEmployee.Name}?", "Yes", "No");
+            var answer = await Application.Current.MainPage.DisplayAlert
+                ("Confirm Delete", $"Are you sure you want to delete {SelectedEmployee.Name}?",
+                "Yes", "No");
 
             if (!answer) return;
 
             IsBusy = true;
-            StatusMessage = "Deleting employee..";
+            StatusMessage = "Deleting employee...";
 
             try
             {
                 var success = await _employeeService.DeleteEmployeeAsync(SelectedEmployee.EmployeeID);
-                StatusMessage = success ? "Employee deleted successfully!" : "Failed to delete employee";
+                StatusMessage = success ? "Employee deleted successfully" : "Failed to delete employee";
 
                 if (success)
                 {
@@ -342,30 +348,6 @@ namespace Module05Exercise01.ViewModel
             finally
             {
                 IsBusy = false;
-                await LoadData();
-            }
-        }
-        private void FilterEmployee()
-        {
-            if (string.IsNullOrWhiteSpace(SearchText))
-            {
-                FilteredEmployeeList.Clear();
-                foreach (var employee in EmployeeList)
-                {
-                    FilteredEmployeeList.Add(employee);
-                }
-            }
-            else
-            {
-                var filtered = EmployeeList.Where(e => e.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-                                                    || e.Address.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-                                                    || e.email.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-                                                    || e.ContactNo.Contains(SearchText, StringComparison.OrdinalIgnoreCase)).ToList();
-                FilteredEmployeeList.Clear();
-                foreach (var employee in filtered)
-                {
-                    FilteredEmployeeList.Add(employee);
-                }
             }
         }
 
