@@ -18,7 +18,8 @@
     <img src="Screenshots/" width="220"/>
 </p>
 
-### Searching an Employee
+## Searching an Employee Test
+### Searching an Employee Screenshot
 <p align="center">
     <img src="Screenshots/" width="220"/>
 </p>
