@@ -1,4 +1,4 @@
-# PDC50-LAB Module 05-Exercise 02
+# PDC50-LAB Module 05 - Exercise 03
 
 ## Main Page Screenshot
 <p align="center">
@@ -12,25 +12,14 @@
     <img src="Screenshots/ViewEmployee_2.png" width="220"/>
 </p>
 
-## Add New Employee Test
-### Add New Employee Screenshot
+## Update Employee Test
+### Update Employee Screenshot
 <p align="center">
-    <img src="Screenshots/Add_New_Employee.png" width="220"/>
+    <img src="Screenshots/" width="220"/>
 </p>
 
-### Contact List After Addition Screenshot
+### Searching an Employee
 <p align="center">
-    <img src="Screenshots/Contact_List_After_Addition.png" width="220"/>
-</p>
-
-## Delete Employee Test
-### Delete Employee Screenshot
-<p align="center">
-    <img src="Screenshots/Delete_Employee.png" width="220"/>
-</p>
-
-### Contact List After Deletion Screenshot
-<p align="center">
-    <img src="Screenshots/Contact_List_After_Deletion.png" width="220"/>
+    <img src="Screenshots/" width="220"/>
 </p>
 
