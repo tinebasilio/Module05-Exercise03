@@ -99,11 +99,12 @@ namespace Module05Exercise01.Services
                 using (var conn = new MySqlConnection(_connectionString))
                 {
                     await conn.OpenAsync();
-                    var cmd = new MySqlCommand(
-                        "UPDATE tblemployee SET Name = @Name, Address = @Address, email = @email, ContactNo = @ContactNo WHERE EmployeeID = @EmployeeID", conn);
+
+                    var cmd = new MySqlCommand("UPDATE tblemployee SET Name = @Name, Address = @Address, Email = @Email, ContactNo = @ContactNo WHERE EmployeeID = @EmployeeID", conn);
+                    cmd.Parameters.AddWithValue("@EmployeeID", updatedEmployee.EmployeeID);
                     cmd.Parameters.AddWithValue("@Name", updatedEmployee.Name);
                     cmd.Parameters.AddWithValue("@Address", updatedEmployee.Address);
-                    cmd.Parameters.AddWithValue("@email", updatedEmployee.email);
+                    cmd.Parameters.AddWithValue("@Email", updatedEmployee.email);
                     cmd.Parameters.AddWithValue("@ContactNo", updatedEmployee.ContactNo);
 
                     var result = await cmd.ExecuteNonQueryAsync();
