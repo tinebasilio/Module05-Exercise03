@@ -9,7 +9,7 @@
 ## ViewEmployee Page Screenshot
 <p align="center">
     <img src="Screenshots/1.png" width="220"/>
-    <img src="Screenshots/1.png" width="220"/>
+    <img src="Screenshots/2.png" width="220"/>
 </p>
 
 ## Update Employee Test
