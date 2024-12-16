@@ -20,7 +20,7 @@
 </p>
 
 ## Searching an Employee Test
-### Searching an Employee Screenshot
+### Searching an Employee Screenshot (Updated)
 <p align="center">
     <img src="Screenshots/4_SearchEmployee.png" width="220"/>
 </p>
