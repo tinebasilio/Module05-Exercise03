@@ -8,19 +8,19 @@
 
 ## ViewEmployee Page Screenshot
 <p align="center">
-    <img src="Screenshots/" width="220"/>
-    <img src="Screenshots/" width="220"/>
+    <img src="Screenshots/1.png" width="220"/>
+    <img src="Screenshots/1.png" width="220"/>
 </p>
 
 ## Update Employee Test
 ### Update Employee Screenshot
 <p align="center">
-    <img src="Screenshots/" width="220"/>
+    <img src="Screenshots/3_UpdateEmmployee.png" width="220"/>
 </p>
 
 ## Searching an Employee Test
 ### Searching an Employee Screenshot
 <p align="center">
-    <img src="Screenshots/" width="220"/>
+    <img src="Screenshots/4_SearchEmployee.png" width="220"/>
 </p>
 
