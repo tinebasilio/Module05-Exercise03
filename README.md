@@ -13,8 +13,9 @@
 </p>
 
 ## Update Employee Test
-### Update Employee Screenshot
+### Update Employee Screenshot (Update Email & Contact No.)
 <p align="center">
+    <img src="Screenshots/5_BeforeUpdate.png" width="220"/>
     <img src="Screenshots/3_UpdateEmployee.png" width="220"/>
 </p>
 
